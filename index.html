@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Octra TX Checker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      background: #f9f9f9;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      font-family: monospace;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .result {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      white-space: pre-wrap;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔎 Octra TX Checker (Max 10 Address)</h2>
+  <p>Masukkan maksimal 10 address Octra (1 per baris):</p>
+  <p>Created By : Kenji Subagja</p>
+  <form id="checkForm">
+    <textarea id="addresses" placeholder="octXXX..."></textarea>
+    <br/>
+    <button type="submit">Cek TX dan Saldo</button>
+  </form>
+  <div class="result" id="result"></div>
+
+  <script>
+    const form = document.getElementById("checkForm");
+    const resultDiv = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultDiv.textContent = "";
+
+      const input = document.getElementById("addresses").value.trim();
+      const addresses = input.split("\n").map(line => line.trim()).filter(line => line);
+
+      if (addresses.length === 0) {
+        resultDiv.innerHTML = "<span class='error'>Mohon masukkan minimal 1 address.</span>";
+        return;
+      }
+      if (addresses.length > 10) {
+        resultDiv.innerHTML = "<span class='error'>Maksimal 10 address!</span>";
+        return;
+      }
+
+      resultDiv.textContent = "⏳ Mengambil data...\n";
+
+      for (const addr of addresses) {
+        if (!addr.startsWith("oct")) {
+          resultDiv.textContent += `❌ ${addr} bukan address Octra yang valid.\n`;
+          continue;
+        }
+
+        try {
+          const resp = await fetch(`https://upload-schedule-drives-enlargement.trycloudflare.com/balance?addr=${addr}`);
+          const data = await resp.json();
+
+          const oct = parseFloat(data.balance || "0").toFixed(6);
+          const nonce = data.nonce;
+
+          resultDiv.textContent += `✅ ${addr}\n  TX: ${nonce}\n  Saldo: ${oct} OCT\n\n`;
+        } catch (err) {
+          resultDiv.textContent += `❌ Gagal ambil data untuk ${addr}\n`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
