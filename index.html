@@ -3,41 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Octra TX Checker</title>
+  <title>Octra TX Checker - Night Mode</title>
   <style>
     body {
       font-family: sans-serif;
       max-width: 600px;
       margin: auto;
       padding: 2rem;
-      background: #f9f9f9;
+      background: #121212;
+      color: #f1f1f1;
     }
     textarea {
       width: 100%;
       height: 180px;
       font-family: monospace;
       margin-bottom: 1rem;
+      background: #1e1e1e;
+      color: #f1f1f1;
+      border: 1px solid #333;
+      padding: 0.5rem;
     }
     button {
       padding: 0.5rem 1rem;
       font-size: 1rem;
       margin-bottom: 1rem;
+      background-color: #333;
+      color: #f1f1f1;
+      border: 1px solid #555;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
     }
     .result {
-      background: #fff;
-      border: 1px solid #ccc;
+      background: #1e1e1e;
+      border: 1px solid #444;
       padding: 1rem;
       white-space: pre-wrap;
     }
     .error {
-      color: red;
+      color: #ff6b6b;
+    }
+    a {
+      color: #80cbc4;
     }
   </style>
 </head>
 <body>
-  <h2>🔎 Octra TX Checker (Max 10 Address)</h2>
+  <h2>🌙 Octra TX Checker (Max 10 Address)</h2>
   <p>Masukkan maksimal 10 address Octra (1 per baris):</p>
-  <p>Created By : Kenji Subagja</p>
+  <p>Created By : <strong>Kenji Subagja</strong></p>
   <form id="checkForm">
     <textarea id="addresses" placeholder="octXXX..."></textarea>
     <br/>
